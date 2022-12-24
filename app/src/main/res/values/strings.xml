@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">BIN Checker</string>
+    <string name="bin_checker">BIN Checker!</string>
+    <string name="enter_your_card">Enter your card</string>
+    <string name="check">Check</string>
 </resources>
