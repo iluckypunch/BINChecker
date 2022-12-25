@@ -1,9 +1,9 @@
 package com.example.binchecker.domain.repository
 
-import com.android.volley.toolbox.StringRequest
+import com.example.binchecker.domain.entity.BinInfo
 
 interface Repository {
-    fun getBinInfo(cardNumber: String): StringRequest
+    fun getBinInfo(requestResult: String): BinInfo
 
     fun getSearchHistory()
 }

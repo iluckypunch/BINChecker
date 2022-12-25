@@ -36,14 +36,15 @@
                     android:id="@+id/textView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
                     android:fontFamily="monospace"
                     android:text="@string/bin_checker"
                     android:textColor="@color/white"
                     android:textSize="36sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintBottom_toTopOf="@id/editTextNumberDecimal"
+                    android:layout_marginBottom="8dp" />
 
                 <EditText
                     android:id="@+id/editTextNumberDecimal"
@@ -59,42 +60,77 @@
                     android:fontFamily="monospace"
                     app:layout_constraintEnd_toStartOf="@id/button"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView"
+                    app:layout_constraintBottom_toTopOf="@id/scheme"
+                    android:layout_marginBottom="8dp"
                     android:autofillHints="creditCardNumber"
                     android:hint="@string/enter_your_card"/>
 
                 <TextView
                     android:id="@+id/scheme"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="20dp"
+                    android:layout_height="0dp"
+                    android:layout_marginStart="20dp"
                     tools:text="Scheme / network:"
                     android:textColor="@color/white"
                     app:layout_constraintBottom_toTopOf="@id/type"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/editTextNumberDecimal" />
+                    android:layout_marginBottom="8dp"/>
 
                 <TextView
                     android:id="@+id/type"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="20dp"
+                    android:layout_height="0dp"
+                    android:layout_marginStart="20dp"
                     tools:text="Type:"
                     android:textColor="@color/white"
                     app:layout_constraintBottom_toTopOf="@id/brand"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/scheme" />
+                    android:layout_marginBottom="20dp"/>
 
                 <TextView
                     android:id="@+id/brand"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="20dp"
+                    android:layout_height="0dp"
+                    android:layout_marginStart="20dp"
                     tools:text="Brand:"
+                    android:textColor="@color/white"
+                    app:layout_constraintBottom_toTopOf="@+id/prepaid"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginBottom="8dp"/>
+
+                <TextView
+                    android:id="@+id/prepaid"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_marginStart="20dp"
+                    tools:text="Prepaid:"
+                    android:textColor="@color/white"
+                    app:layout_constraintBottom_toTopOf="@+id/country"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginBottom="8dp"/>
+
+                <TextView
+                    android:id="@+id/country"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_marginStart="20dp"
+                    tools:text="Country:"
+                    android:layout_marginBottom="8dp"
+                    android:textColor="@color/white"
+                    app:layout_constraintBottom_toTopOf="@+id/bank"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <TextView
+                    android:id="@+id/bank"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginBottom="8dp"
+                    tools:text="Bank:"
                     android:textColor="@color/white"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/type" />
+                    android:autoLink="all" />
 
                 <Button
                     android:id="@+id/button"

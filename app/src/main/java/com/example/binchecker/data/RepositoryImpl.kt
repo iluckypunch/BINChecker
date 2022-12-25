@@ -2,28 +2,36 @@
 
 package com.example.binchecker.data
 
-import android.util.Log
-import com.android.volley.Request
-import com.android.volley.toolbox.StringRequest
-import com.android.volley.toolbox.Volley
+import com.example.binchecker.domain.entity.BinInfo
 import com.example.binchecker.domain.repository.Repository
+import org.json.JSONObject
 
 object RepositoryImpl: Repository {
-    private const val START_OF_URL = "https://lookup.binlist.net/"
 
-    override fun getBinInfo(cardNumber: String): StringRequest {
-        val url = START_OF_URL + cardNumber
-        val request = StringRequest(
-            Request.Method.GET,
-            url,
-            {
-                result -> Log.d("RepositoryImpl", "Result: $result")
-            },
-            {
-                error -> Log.d("RepositoryImpl", "Error: $error")
-            }
+    override fun getBinInfo(requestResult: String): BinInfo {
+        val mainObject = JSONObject(requestResult)
+        return BinInfo(
+            mainObject.getString("scheme"),
+            mainObject.getString("type"),
+            mainObject.getString("brand"),
+            mainObject.getString("prepaid").toBoolean(),
+            mainObject.getJSONObject("country").toMap(),
+            mainObject.getJSONObject("bank").toMap()
         )
-        return request
+    }
+
+    private fun JSONObject.toMap(): Map<String, String>? {
+        if (this.toString() == "null") {
+            return null
+        }
+        val map = mutableMapOf<String, String>()
+        val keysItr: Iterator<String> = this.keys()
+        while (keysItr.hasNext()) {
+            val key = keysItr.next()
+            val value = this.get(key).toString()
+            map[key] = value
+        }
+        return map
     }
 
     override fun getSearchHistory() {
