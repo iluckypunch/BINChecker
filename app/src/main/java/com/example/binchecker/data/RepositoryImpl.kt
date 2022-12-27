@@ -10,20 +10,27 @@ object RepositoryImpl: Repository {
 
     override fun getBinInfo(requestResult: String): BinInfo {
         val mainObject = JSONObject(requestResult)
+        val countryObject: Map<String, String>? = if (mainObject.getString("country") == "null") {
+            null
+        } else {
+            mainObject.getJSONObject("country").toMap()
+        }
+        val bankObject: Map<String, String>? = if (mainObject.getString("bank") == "null") {
+            null
+        } else {
+            mainObject.getJSONObject("bank").toMap()
+        }
         return BinInfo(
             mainObject.getString("scheme"),
             mainObject.getString("type"),
             mainObject.getString("brand"),
             mainObject.getString("prepaid").toBoolean(),
-            mainObject.getJSONObject("country").toMap(),
-            mainObject.getJSONObject("bank").toMap()
+            countryObject,
+            bankObject
         )
     }
 
-    private fun JSONObject.toMap(): Map<String, String>? {
-        if (this.toString() == "null") {
-            return null
-        }
+    private fun JSONObject.toMap(): Map<String, String> {
         val map = mutableMapOf<String, String>()
         val keysItr: Iterator<String> = this.keys()
         while (keysItr.hasNext()) {

@@ -1,7 +1,6 @@
 package com.example.binchecker.presentation
 
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.android.volley.Request
@@ -31,6 +30,7 @@ class MainActivity : AppCompatActivity() {
             val number = binding.editTextNumberDecimal.text.toString()
             getRequest(number)
             updateBinInfo()
+            observeViewModels()
         }
     }
 
@@ -43,10 +43,10 @@ class MainActivity : AppCompatActivity() {
                     result -> viewModel.getBinInfo(result)
             },
             {
-                    error -> Log.d("RepositoryImpl", "Error: $error")
+                    error -> viewModel.validateInput(error.toString())
             }
         )
-        val queue = Volley.newRequestQueue(applicationContext)
+        val queue = Volley.newRequestQueue(this@MainActivity)
         queue.add(request)
     }
 
@@ -58,14 +58,25 @@ class MainActivity : AppCompatActivity() {
                 brand.text = BRAND + it.brand
                 prepaid.text = PREPAID + if (it.prepaid == true) "Yes" else "No"
                 country.text = (COUNTRY +
-                        (it.country?.get("emoji") ?: "") +
-                        (it.country?.get("name") ?: ""))
+                        (it.country?.get("emoji") ?: "?") +
+                        (it.country?.get("name") ?: "?"))
                 bank.text = (BANK +
-                        (it.bank?.get("name") ?: "") + "\n" +
-                        (it.bank?.get("url") ?: "") + "\n" +
-                        (it.bank?.get("phone") ?: "") + "\n" +
-                        (it.bank?.get("city") ?: ""))
+                        (it.bank?.get("name") ?: "?") + "\n" +
+                        (it.bank?.get("url") ?: "?") + "\n" +
+                        (it.bank?.get("phone") ?: "?") + "\n" +
+                        (it.bank?.get("city") ?: "?"))
             }
+        }
+    }
+
+    private fun observeViewModels() {
+        viewModel.errorInput.observe(this) {
+            val message = if (it) {
+                INVALID_INPUT
+            } else {
+                null
+            }
+            binding.editTextNumberDecimal.error = message
         }
     }
 
@@ -82,5 +93,6 @@ class MainActivity : AppCompatActivity() {
         const val PREPAID = "Prepaid: "
         const val COUNTRY = "Country: "
         const val BANK = "Bank: "
+        const val INVALID_INPUT = "Invalid input"
     }
 }
