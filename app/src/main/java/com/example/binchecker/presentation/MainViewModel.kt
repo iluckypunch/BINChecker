@@ -40,6 +40,10 @@ class MainViewModel: ViewModel() {
         return result
     }
 
+    fun resetErrorInput() {
+        _errorInput.value = false
+    }
+
     companion object {
         const val CLIENT_ERROR = "com.android.volley.ClientError"
         const val MAX_INPUT_SIZE = 8

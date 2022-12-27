@@ -1,6 +1,8 @@
 package com.example.binchecker.presentation
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.android.volley.Request
@@ -31,6 +33,7 @@ class MainActivity : AppCompatActivity() {
             getRequest(number)
             updateBinInfo()
             observeViewModels()
+            addTextChangeListener()
         }
     }
 
@@ -78,6 +81,20 @@ class MainActivity : AppCompatActivity() {
             }
             binding.editTextNumberDecimal.error = message
         }
+    }
+
+    private fun addTextChangeListener() {
+        binding.editTextNumberDecimal.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                viewModel.resetErrorInput()
+            }
+
+            override fun afterTextChanged(p0: Editable?) {
+            }
+        })
     }
 
     override fun onDestroy() {
