@@ -27,6 +27,7 @@ class MainActivity : AppCompatActivity() {
         setClickListener()
     }
 
+
     private fun setClickListener() {
         binding.button.setOnClickListener {
             val number = binding.editTextNumberDecimal.text.toString()
@@ -43,7 +44,7 @@ class MainActivity : AppCompatActivity() {
             Request.Method.GET,
             url,
             {
-                    result -> viewModel.getBinInfo(result)
+                    result -> viewModel.getBinInfo(result, cardNumber)
             },
             {
                     error -> viewModel.validateInput(error.toString())

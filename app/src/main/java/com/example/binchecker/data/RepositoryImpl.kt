@@ -2,13 +2,16 @@
 
 package com.example.binchecker.data
 
+import android.content.Context
+import androidx.room.Room
+import com.example.binchecker.data.room.DatabaseSearchHistory
 import com.example.binchecker.domain.entity.BinInfo
 import com.example.binchecker.domain.repository.Repository
 import org.json.JSONObject
 
 object RepositoryImpl: Repository {
 
-    override fun getBinInfo(requestResult: String): BinInfo {
+    override fun getBinInfo(requestResult: String, cardNumber: String): BinInfo {
         val mainObject = JSONObject(requestResult)
         val countryObject: Map<String, String>? = if (mainObject.getString("country") == "null") {
             null
@@ -26,7 +29,8 @@ object RepositoryImpl: Repository {
             mainObject.getString("brand"),
             mainObject.getString("prepaid").toBoolean(),
             countryObject,
-            bankObject
+            bankObject,
+            cardNumber
         )
     }
 
@@ -41,7 +45,17 @@ object RepositoryImpl: Repository {
         return map
     }
 
-    override fun getSearchHistory() {
+    override fun getSearchHistory(context: Context): List<BinInfo> {
+        val db = Room.databaseBuilder(
+            context,
+            DatabaseSearchHistory::class.java,
+            "BinInfoTable")
+            .build()
+
+        val daoSearchHistory = db.daoSearchHistory()
+        val searchHistory = daoSearchHistory.getSearchHistory()
+        return searchHistory
+
         TODO("Not yet implemented")
     }
 }

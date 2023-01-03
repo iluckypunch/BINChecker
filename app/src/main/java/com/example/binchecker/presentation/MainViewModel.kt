@@ -23,8 +23,8 @@ class MainViewModel: ViewModel() {
     val errorInput: LiveData<Boolean>
         get() = _errorInput
 
-    fun getBinInfo(requestResult: String) {
-        _binInfoLD.value = getBinInfoUseCase.getBinInfo(requestResult)
+    fun getBinInfo(requestResult: String, cardNumber: String) {
+        _binInfoLD.value = getBinInfoUseCase.getBinInfo(requestResult, cardNumber)
     }
 
     fun validateInput(input: String): Boolean {
