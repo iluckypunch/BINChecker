@@ -46,15 +46,15 @@ object RepositoryImpl: Repository {
     }
 
     override fun getSearchHistory(context: Context): List<BinInfo> {
-        val db = Room.databaseBuilder(
-            context,
-            DatabaseSearchHistory::class.java,
-            "BinInfoTable")
-            .build()
-
-        val daoSearchHistory = db.daoSearchHistory()
-        val searchHistory = daoSearchHistory.getSearchHistory()
-        return searchHistory
+//        val db = Room.databaseBuilder(
+//            context,
+//            DatabaseSearchHistory::class.java,
+//            "BinInfoTable"
+//        )
+//            .build()
+//
+//        val daoSearchHistory = db.daoSearchHistory()
+//        return daoSearchHistory.getSearchHistory()
 
         TODO("Not yet implemented")
     }

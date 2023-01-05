@@ -1,5 +1,6 @@
 package com.example.binchecker.data.room
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.example.binchecker.domain.entity.BinInfo
 
@@ -8,11 +9,11 @@ interface DaoSearchHistory {
 
 
     @Query("SELECT * FROM BinInfoTable")
-    fun getSearchHistory(): List<BinInfo>
+    fun getSearchHistory(): LiveData<List<BinInfo>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertBinInfo(binInfo: BinInfo)
+    suspend fun insertBinInfo(binInfo: BinInfo)
 
     @Delete
-    fun deleteBinInfo(binInfo: BinInfo)
+    suspend fun deleteBinInfo(binInfo: BinInfo)
 }
