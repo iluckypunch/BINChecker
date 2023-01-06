@@ -5,14 +5,17 @@ import android.text.Editable
 import android.text.TextWatcher
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.volley.Request
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.example.binchecker.databinding.ActivityMainBinding
+import com.example.binchecker.presentation.adapters.SearchHistoryAdapter
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var viewModel: MainViewModel
+    private lateinit var searchHistoryAdapter: SearchHistoryAdapter
 
     private var _binding: ActivityMainBinding? = null
     private val binding: ActivityMainBinding
@@ -24,7 +27,21 @@ class MainActivity : AppCompatActivity() {
         _binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         viewModel = ViewModelProvider(this)[MainViewModel::class.java]
+        searchHistoryAdapter = SearchHistoryAdapter(this)
+        viewModel.searchHistoryList.observe(this) {
+            searchHistoryAdapter.setSearchHistoryList(it)
+        }
         setClickListener()
+        setupRecyclerView()
+    }
+
+    private fun setupRecyclerView() {
+        val searchHistoryList = binding.searchHistoryList
+        with(searchHistoryList) {
+            adapter = searchHistoryAdapter
+            layoutManager = LinearLayoutManager(this.context)
+//            recycledViewPool.setMaxRecycledViews(SearchHistoryAdapter.VIEW_TYPE, SearchHistoryAdapter.MAX_POOL_SIZE)
+        }
     }
 
 

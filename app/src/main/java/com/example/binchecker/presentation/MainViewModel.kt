@@ -1,19 +1,26 @@
 package com.example.binchecker.presentation
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.binchecker.data.RepositoryImpl
+import com.example.binchecker.data.room.DatabaseSearchHistory
+import com.example.binchecker.data.room.RepositorySearchHistory
 import com.example.binchecker.domain.entity.BinInfo
 import com.example.binchecker.domain.usecases.GetBinInfoUseCase
-import com.example.binchecker.domain.usecases.GetSearchHistoryUseCase
+import kotlinx.coroutines.launch
 
-class MainViewModel: ViewModel() {
+class MainViewModel(application: Application): AndroidViewModel(application) {
 
     private val repository = RepositoryImpl
 
     private val getBinInfoUseCase = GetBinInfoUseCase(repository)
-    private val getSearchHistoryUseCase = GetSearchHistoryUseCase(repository)
+
+    private val repositorySearchHistory: RepositorySearchHistory
+
+    val searchHistoryList: LiveData<List<BinInfo>>
 
     private val _binInfoLD = MutableLiveData<BinInfo>()
     val binInfoLD: LiveData<BinInfo>
@@ -23,8 +30,21 @@ class MainViewModel: ViewModel() {
     val errorInput: LiveData<Boolean>
         get() = _errorInput
 
+    init {
+        val daoSearchHistory = DatabaseSearchHistory.getDatabase(application).daoSearchHistory()
+        repositorySearchHistory = RepositorySearchHistory(daoSearchHistory)
+        searchHistoryList = repositorySearchHistory.searchHistory
+    }
+
+    private fun insertInSearchHistory(binInfo: BinInfo) = viewModelScope.launch {
+        repositorySearchHistory.insert(binInfo)
+    }
+
+
     fun getBinInfo(requestResult: String, cardNumber: String) {
-        _binInfoLD.value = getBinInfoUseCase.getBinInfo(requestResult, cardNumber)
+        val binInfo = getBinInfoUseCase.getBinInfo(requestResult, cardNumber)
+        insertInSearchHistory(binInfo)
+        _binInfoLD.value = binInfo
     }
 
     fun validateInput(input: String): Boolean {
