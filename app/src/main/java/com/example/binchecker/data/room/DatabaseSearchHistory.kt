@@ -19,7 +19,9 @@ abstract class DatabaseSearchHistory: RoomDatabase() {
         @Volatile
         private var INSTANCE: DatabaseSearchHistory? = null
 
-        fun getDatabase(context: Context): DatabaseSearchHistory {
+        fun getDatabase(
+            context: Context
+        ): DatabaseSearchHistory {
             val tempInstance = INSTANCE
             if (tempInstance != null) {
                 return tempInstance
@@ -29,7 +31,8 @@ abstract class DatabaseSearchHistory: RoomDatabase() {
                     context.applicationContext,
                     DatabaseSearchHistory::class.java,
                     "BinInfoTable"
-                ).build()
+                )
+                    .build()
                 INSTANCE = instance
                 return instance
             }

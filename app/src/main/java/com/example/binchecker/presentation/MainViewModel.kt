@@ -1,15 +1,15 @@
 package com.example.binchecker.presentation
 
 import android.app.Application
-import android.content.Context
-import androidx.lifecycle.*
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.example.binchecker.data.RepositoryImpl
-import com.example.binchecker.data.room.DaoSearchHistory
 import com.example.binchecker.data.room.DatabaseSearchHistory
 import com.example.binchecker.data.room.RepositorySearchHistory
 import com.example.binchecker.domain.entity.BinInfo
 import com.example.binchecker.domain.usecases.GetBinInfoUseCase
-import com.example.binchecker.domain.usecases.GetSearchHistoryUseCase
 import kotlinx.coroutines.launch
 
 class MainViewModel(application: Application): AndroidViewModel(application) {
@@ -36,15 +36,15 @@ class MainViewModel(application: Application): AndroidViewModel(application) {
         searchHistoryList = repositorySearchHistory.searchHistory
     }
 
-    fun insertInSearchHistory(binInfo: BinInfo) = viewModelScope.launch {
+    private fun insertInSearchHistory(binInfo: BinInfo) = viewModelScope.launch {
         repositorySearchHistory.insert(binInfo)
     }
 
 
     fun getBinInfo(requestResult: String, cardNumber: String) {
         val binInfo = getBinInfoUseCase.getBinInfo(requestResult, cardNumber)
-        _binInfoLD.value = binInfo
         insertInSearchHistory(binInfo)
+        _binInfoLD.value = binInfo
     }
 
     fun validateInput(input: String): Boolean {

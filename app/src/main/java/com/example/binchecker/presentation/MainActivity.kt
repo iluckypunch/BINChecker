@@ -6,14 +6,11 @@ import android.text.TextWatcher
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.room.Room
 import com.android.volley.Request
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
-import com.example.binchecker.data.room.DatabaseSearchHistory
 import com.example.binchecker.databinding.ActivityMainBinding
 import com.example.binchecker.presentation.adapters.SearchHistoryAdapter
-import com.example.binchecker.presentation.adapters.SearchHistoryViewHolder
 
 class MainActivity : AppCompatActivity() {
 
@@ -30,20 +27,20 @@ class MainActivity : AppCompatActivity() {
         _binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         viewModel = ViewModelProvider(this)[MainViewModel::class.java]
-        setupRecyclerView()
+        searchHistoryAdapter = SearchHistoryAdapter(this)
         viewModel.searchHistoryList.observe(this) {
-            searchHistoryAdapter.submitList(it)
+            searchHistoryAdapter.setSearchHistoryList(it)
         }
         setClickListener()
+        setupRecyclerView()
     }
 
     private fun setupRecyclerView() {
         val searchHistoryList = binding.searchHistoryList
-        searchHistoryAdapter = SearchHistoryAdapter()
         with(searchHistoryList) {
             adapter = searchHistoryAdapter
             layoutManager = LinearLayoutManager(this.context)
-            recycledViewPool.setMaxRecycledViews(SearchHistoryAdapter.VIEW_TYPE, SearchHistoryAdapter.MAX_POOL_SIZE)
+//            recycledViewPool.setMaxRecycledViews(SearchHistoryAdapter.VIEW_TYPE, SearchHistoryAdapter.MAX_POOL_SIZE)
         }
     }
 
