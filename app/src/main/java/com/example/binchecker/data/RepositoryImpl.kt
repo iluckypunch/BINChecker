@@ -2,9 +2,6 @@
 
 package com.example.binchecker.data
 
-import android.content.Context
-import androidx.room.Room
-import com.example.binchecker.data.room.DatabaseSearchHistory
 import com.example.binchecker.domain.entity.BinInfo
 import com.example.binchecker.domain.repository.Repository
 import org.json.JSONObject
@@ -43,19 +40,5 @@ object RepositoryImpl: Repository {
             map[key] = value
         }
         return map
-    }
-
-    override fun getSearchHistory(context: Context): List<BinInfo> {
-//        val db = Room.databaseBuilder(
-//            context,
-//            DatabaseSearchHistory::class.java,
-//            "BinInfoTable"
-//        )
-//            .build()
-//
-//        val daoSearchHistory = db.daoSearchHistory()
-//        return daoSearchHistory.getSearchHistory()
-
-        TODO("Not yet implemented")
     }
 }

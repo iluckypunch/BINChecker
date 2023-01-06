@@ -10,7 +10,9 @@ import com.example.binchecker.domain.entity.BinInfo
 class SearchHistoryAdapter internal constructor(context: Context): RecyclerView.Adapter<SearchHistoryViewHolder>() {
 
     private val inflater: LayoutInflater = LayoutInflater.from(context)
-    private var searchHistoryList = emptyList<BinInfo>()
+    var searchHistoryList = emptyList<BinInfo>()
+
+    var onClickListener: ((BinInfo) -> Unit)? = null
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchHistoryViewHolder {
@@ -19,8 +21,12 @@ class SearchHistoryAdapter internal constructor(context: Context): RecyclerView.
     }
 
     override fun onBindViewHolder(holder: SearchHistoryViewHolder, position: Int) {
-        val binInfo = searchHistoryList[position]
+        val pos = searchHistoryList.size - position - 1
+        val binInfo = searchHistoryList[pos]
         holder.tvNumber.text = binInfo.number
+        holder.view.setOnClickListener {
+            onClickListener?.invoke(binInfo)
+        }
     }
 
     internal fun setSearchHistoryList(searchHistoryList: List<BinInfo>) {

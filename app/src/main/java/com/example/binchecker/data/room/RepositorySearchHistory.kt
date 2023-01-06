@@ -10,4 +10,8 @@ class RepositorySearchHistory(private val daoSearchHistory: DaoSearchHistory) {
     suspend fun insert(binInfo: BinInfo) {
         daoSearchHistory.insertBinInfo(binInfo)
     }
+
+    suspend fun delete(binInfo: BinInfo) {
+        daoSearchHistory.deleteBinInfo(binInfo)
+    }
 }

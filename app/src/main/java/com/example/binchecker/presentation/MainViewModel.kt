@@ -40,6 +40,10 @@ class MainViewModel(application: Application): AndroidViewModel(application) {
         repositorySearchHistory.insert(binInfo)
     }
 
+    fun deleteInSearchHistory(binInfo: BinInfo) = viewModelScope.launch {
+        repositorySearchHistory.delete(binInfo)
+    }
+
 
     fun getBinInfo(requestResult: String, cardNumber: String) {
         val binInfo = getBinInfoUseCase.getBinInfo(requestResult, cardNumber)

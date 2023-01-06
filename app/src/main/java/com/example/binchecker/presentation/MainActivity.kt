@@ -4,8 +4,11 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.size
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.android.volley.Request
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
@@ -40,7 +43,37 @@ class MainActivity : AppCompatActivity() {
         with(searchHistoryList) {
             adapter = searchHistoryAdapter
             layoutManager = LinearLayoutManager(this.context)
-//            recycledViewPool.setMaxRecycledViews(SearchHistoryAdapter.VIEW_TYPE, SearchHistoryAdapter.MAX_POOL_SIZE)
+        }
+        setupClickListener()
+        setupSwipeListener(searchHistoryList)
+    }
+
+    private fun setupSwipeListener(searchHistoryList: RecyclerView) {
+        val callback = object : ItemTouchHelper.SimpleCallback(
+            0, ItemTouchHelper.RIGHT or ItemTouchHelper.LEFT
+        ) {
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
+                return false
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val position = searchHistoryList.size - viewHolder.adapterPosition - 1
+                val item = searchHistoryAdapter.searchHistoryList[position]
+                viewModel.deleteInSearchHistory(item)
+            }
+        }
+
+        val itemTouchHelper = ItemTouchHelper(callback)
+        itemTouchHelper.attachToRecyclerView(searchHistoryList)
+    }
+
+    private fun setupClickListener() {
+        searchHistoryAdapter.onClickListener = {
+            binding.editTextNumberDecimal.text = Editable.Factory.getInstance().newEditable(it.number)
         }
     }
 
